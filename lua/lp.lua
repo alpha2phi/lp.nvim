@@ -1,4 +1,3 @@
--- main module file
 local M = {}
 
 local markdown_code_block = [[
@@ -15,7 +14,6 @@ local markdown_query = vim.treesitter.parse_query("markdown", markdown_code_bloc
 local run_code_block = function(text)
   local split = vim.split(text, "\n")
   local code_block = table.concat(vim.list_slice(split, 1, #split), "\n")
-
   local job = require("plenary.job"):new({
     command = "python",
     args = { "-c", code_block },
@@ -37,7 +35,6 @@ end
 
 M.run = function(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
-
   if vim.bo[bufnr].filetype ~= "markdown" then
     vim.notify("Only Markdown is supported")
     return
@@ -49,15 +46,12 @@ M.run = function(bufnr)
       local range = { node:range() }
       local code_block = vim.treesitter.get_node_text(node, bufnr)
       local result = run_code_block(code_block)
-      table.insert(result, 1, "```output")
+      table.insert(result, 1, "```text")
       table.insert(result, 1, "")
       table.insert(result, #result + 1, "```")
-
-      vim.api.nvim_buf_set_lines(bufnr, range[3] + 1, range[3] + 1 , false, result)
+      vim.api.nvim_buf_set_lines(bufnr, range[3] + 1, range[3] + 1, false, result)
     end
   end
 end
-
-M.run(42)
 
 return M
