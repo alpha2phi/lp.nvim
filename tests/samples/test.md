@@ -14,7 +14,7 @@ print(f"The time now is {datetime.now()} ")
 The time now is 2022-10-02 16:01:47.101823
 ```
 
-## Another Python Code block
+## Another Python Code Snippet
 
 Using the yfinance library, we can get the stock information.
 
@@ -41,8 +41,8 @@ Date
 Name: Dividends, Length: 76, dtype: float64
 ```
 
-## Lua Code Block - Not Supported Yet
+## JavaScript Code Snippet
 
-```lua
-print("Hello alpha2phi")
+```javascript
+console.log("hello alpha2phi")
 ```
