@@ -4,6 +4,7 @@ if is_not_a_directory then
   vim.fn.system({ "git", "clone", "https://github.com/nvim-lua/plenary.nvim", plenary_dir })
 end
 
+vim.opt.rtp:append(vim.env.VIMRUNTIME)
 vim.opt.rtp:append(".")
 vim.opt.rtp:append(plenary_dir)
 

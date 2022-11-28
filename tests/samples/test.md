@@ -44,5 +44,11 @@ Name: Dividends, Length: 76, dtype: float64
 ## JavaScript Code Snippet
 
 ```javascript
-console.log("hello alpha2phi")
+console.log("hello alpha2phi");
+```
+
+## TypeScript Code Snippet
+
+```typescript
+console.log("hello alpha2phi");
 ```
