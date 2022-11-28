@@ -11,13 +11,27 @@ local markdown_code_block = [[
   )
 ]]
 
-local run_code_block = function(text)
+local run_code_block = function(text, lang)
+  local opts = {}
+  local timeout = 150000
   local split = vim.split(text, "\n")
   local code_block = table.concat(vim.list_slice(split, 1, #split), "\n")
-  local job = require("plenary.job"):new({
-    command = "python",
-    args = { "-c", code_block },
-  })
+  if lang == "python" then
+    opts = {
+      command = "python",
+      args = { "-c", code_block },
+      timeout = timeout
+
+    }
+  elseif lang == "javascript" or lang == "typescript" then
+    -- TODO write to a temp file
+    opts = {
+      command = "node",
+      args = { code_block },
+      timeout = timeout
+    }
+  end
+  local job = require("plenary.job"):new(opts)
   return job:sync()
 end
 
@@ -48,7 +62,9 @@ M.run = function(bufnr, lang)
       local range = { node:range() }
       local code_block = vim.treesitter.get_node_text(node, bufnr)
       print(code_block)
-      -- local result = run_code_block(code_block)
+      local result = run_code_block(code_block, lang)
+      print(vim.pretty_print(result))
+      
       -- table.insert(result, 1, "```text")
       -- table.insert(result, 1, "")
       -- table.insert(result, #result + 1, "```")
@@ -57,8 +73,9 @@ M.run = function(bufnr, lang)
   end
 end
 
-for _, v in ipairs(SUPPORTED_LANGS) do
-  M.run(78, v)
-end
+
+-- for _, v in ipairs(SUPPORTED_LANGS) do
+  M.run(18, "javascript")
+-- end
 
 return M
