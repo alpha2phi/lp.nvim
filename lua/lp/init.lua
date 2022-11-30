@@ -1,14 +1,14 @@
 local M = {}
 
-local SUPPORTED_LANGS = { "python", "javascript", "typescript" }
+local SUPPORTED_LANGS = { "python", "javascript" }
 
 local markdown_code_block = [[
   (
   fenced_code_block
   (info_string (language) @language) (#eq? @language "%s")
-  (code_fence_content) @content
+  (code_fence_content) @code_content
   (fenced_code_block_delimiter) @delimiter
-  )
+  ) @code_block
 ]]
 
 local get_root = function(bufnr)
@@ -46,7 +46,7 @@ M.run_code_block = function(text, lang)
       args = { "-c", code_block },
       timeout = timeout,
     }
-  elseif lang == "javascript" or lang == "typescript" then
+  elseif lang == "javascript" then
     local tmp_file = create_tmp_file(code_block)
     if tmp_file == nil then
       vim.notify("Unable to create temporary file!")
@@ -62,7 +62,7 @@ M.run_code_block = function(text, lang)
   return job:sync()
 end
 
-M.run = function(bufnr, lang)
+M.run = function(lang, bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   if vim.bo[bufnr].filetype ~= "markdown" then
     vim.notify("Only Markdown is supported")
@@ -73,21 +73,27 @@ M.run = function(bufnr, lang)
   local markdown_query = vim.treesitter.parse_query("markdown", target_code_block)
   for id, node in markdown_query:iter_captures(root, bufnr, 0, -1) do
     local name = markdown_query.captures[id]
-    if name == "content" then
-      local range = { node:range() }
-      local code_block = vim.treesitter.get_node_text(node, bufnr)
-      local result = M.run_code_block(code_block, lang)
+    local range = { node:range() }
+    if name == "code_content" and lang ~= "text" then
+      local code_content = vim.treesitter.get_node_text(node, bufnr)
+      local result = M.run_code_block(code_content, lang)
       table.insert(result, 1, "```text")
       table.insert(result, 1, "")
       table.insert(result, #result + 1, "```")
       vim.api.nvim_buf_set_lines(bufnr, range[3] + 1, range[3] + 1, false, result)
+    elseif name == "code_block" and lang == "text" then
+      vim.api.nvim_buf_set_lines(bufnr, range[1], range[3], false, {})
     end
   end
 end
 
+M.clean_all = function(bufnr)
+  M.run("text", bufnr)
+end
+
 M.run_all = function(bufnr)
   for _, v in ipairs(SUPPORTED_LANGS) do
-    M.run(bufnr, v)
+    M.run(v, bufnr)
   end
 end
 
