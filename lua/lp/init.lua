@@ -1,3 +1,21 @@
+-- MIT License Copyright (c) 2022 Alpha2phi
+
+-- Documentation ==============================================================
+--- Generate output for embedded code snippets
+---
+--- lp.nvim is a plugin to generate code output for embedded code snippets in Markdown
+--- document
+---
+--- Currently support:
+--- - JavaScript
+--- - Python
+---
+--- Available commands:
+--- - LpRun <lang>
+--- - LpClean
+---
+---@tag lp.nvim
+
 local M = {}
 
 local SUPPORTED_LANGS = { "python", "javascript" }
@@ -29,12 +47,15 @@ local create_tmp_file = function(content)
   return nil
 end
 
+--- Module configuration.
 M.config = {}
 
+--- Set up the module.
 M.setup = function(args)
   M.config = vim.tbl_deep_extend("force", M.config, args or {})
 end
 
+--- Create a plenary job to generate code output based on the language.
 M.run_code_block = function(text, lang)
   local opts = {}
   local timeout = 150000
@@ -62,6 +83,7 @@ M.run_code_block = function(text, lang)
   return job:sync()
 end
 
+--- Parse the buffer for a particular language and generate the code output.
 M.run = function(lang, bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   if vim.bo[bufnr].filetype ~= "markdown" then
@@ -87,10 +109,12 @@ M.run = function(lang, bufnr)
   end
 end
 
+--- Remove generated code output.
 M.clean_all = function(bufnr)
   M.run("text", bufnr)
 end
 
+--- Run code snippets for all languages.
 M.run_all = function(bufnr)
   for _, v in ipairs(SUPPORTED_LANGS) do
     M.run(v, bufnr)

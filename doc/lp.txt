@@ -1,0 +1,49 @@
+==============================================================================
+------------------------------------------------------------------------------
+                                                                       *lp.nvim*
+Generate output for embedded code snippets
+
+lp.nvim is a plugin to generate code output for embedded code snippets in Markdown
+document
+
+Currently support:
+- JavaScript
+- Python
+
+Available commands:
+- LpRun <lang>
+- LpClean
+
+
+------------------------------------------------------------------------------
+                                                                      *M.config*
+                                   `M.config`
+Module configuration.
+
+------------------------------------------------------------------------------
+                                                                     *M.setup()*
+                               `M.setup`({args})
+Set up the module.
+
+------------------------------------------------------------------------------
+                                                            *M.run_code_block()*
+                       `M.run_code_block`({text}, {lang})
+Create a plenary job to generate code output based on the language.
+
+------------------------------------------------------------------------------
+                                                                       *M.run()*
+                            `M.run`({lang}, {bufnr})
+Parse the buffer for a particular language and generate the code output.
+
+------------------------------------------------------------------------------
+                                                                 *M.clean_all()*
+                             `M.clean_all`({bufnr})
+Remove generated code output.
+
+------------------------------------------------------------------------------
+                                                                   *M.run_all()*
+                              `M.run_all`({bufnr})
+Run code snippets for all languages.
+
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
