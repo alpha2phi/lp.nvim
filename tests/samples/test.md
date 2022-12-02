@@ -11,10 +11,10 @@ print(f"The time now is {datetime.now()} ")
 ```
 
 ```text
-The time now is 2022-10-02 16:01:47.101823
+The time now is 2022-12-01 12:08:27.923139
 ```
 
-## Another Python Code block
+## Another Python Code Snippet
 
 Using the yfinance library, we can get the stock information.
 
@@ -33,16 +33,23 @@ Date
 1988-02-12    0.000714
 1988-05-16    0.000714
                 ...
-2021-08-06    0.220000
 2021-11-05    0.220000
 2022-02-04    0.220000
 2022-05-06    0.230000
 2022-08-05    0.230000
-Name: Dividends, Length: 76, dtype: float64
+2022-11-04    0.230000
+Name: Dividends, Length: 77, dtype: float64
 ```
 
-## Lua Code Block - Not Supported Yet
+## JavaScript Code Snippet
 
-```lua
-print("Hello alpha2phi")
+```javascript
+function sum(a, b) {
+  return a + b;
+}
+console.log("sum of 2 numbers - ", sum(10, 168));
+```
+
+```text
+sum of 2 numbers -  178
 ```
