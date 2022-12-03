@@ -2,7 +2,7 @@
 
 Generate output for embedded code snippets.
 
-lp.nvim is a plugin to generate code output for embedded code snippets in Markdown
+lp.nvim is a Neovim plugin to generate code output for embedded code snippets in Markdown
 document
 
 Currently support:
